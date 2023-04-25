@@ -1,12 +1,11 @@
--- SERVICES
 local replicatedstroage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
 local tweenservice = game:GetService("TweenService")
 local uis = game:GetService("UserInputService")
 
 
-local camera = workspace.Camera 
-local player = game.Players.LocalPlayer -- self
+local camera = workspace.Camera -- Camera
+local player = game.Players.LocalPlayer -- Player
 
 local Pillows = replicatedstroage:WaitForChild("Pillows") -- replicatedstroage.Pillows
 local Boxs = workspace:WaitForChild("Boxs") -- workspace.Boxs
@@ -56,12 +55,12 @@ end
 		end
 		
 		table.sort(pillows)
-		for i = 1, math.floor(#pillows/2) do
+		for i = 1, math.floor(#pillows/2) do -- Sort Pillows by Rarities
 			local j = #pillows - i + 1
 			pillows[i], pillows[j] = pillows[j], pillows[i]
 		end
 		
-		for _, rarity in pairs(pillows) do
+		for _, rarity in pairs(pillows) do --  Get rarity in Each pillow
 			
 		
 		for _, pillow in pairs(boxPillows:GetChildren()) do
