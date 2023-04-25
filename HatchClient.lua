@@ -4,16 +4,16 @@ local tweenservice = game:GetService("TweenService")
 local uis = game:GetService("UserInputService")
 
 
-local camera = workspace.Camera
-local player = game.Players.LocalPlayer
+local camera = workspace.Camera 
+local player = game.Players.LocalPlayer -- self
 
-local Pillows = replicatedstroage:WaitForChild("Pillows")
-local Boxs = workspace:WaitForChild("Boxs")
-local module3D = require(replicatedstroage:WaitForChild("Module3D"))
+local Pillows = replicatedstroage:WaitForChild("Pillows") -- replicatedstroage.Pillows
+local Boxs = workspace:WaitForChild("Boxs") -- workspace.Boxs
+local module3D = require(replicatedstroage:WaitForChild("Module3D")) --replicatedstroage.Module3D
 
 
-local maxDisplayDistance = 15
-local canHatch = false
+local maxDisplayDistance = 15 
+local canHatch = false 
 local isHatching = false
 local hatchOneConnection = nil
 
@@ -22,10 +22,10 @@ wait(.5)
 local function animateBillboard(billboard, openOrClose)
 
 	if openOrClose == true then
-		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play()
+		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play() -- Play Tween
 	else
-		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play()
-		wait(.1)
+		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play() -- Stop Tween
+		wait(.1) 
 		billboard.Enabled = false
 		
 	end
@@ -33,20 +33,20 @@ local function animateBillboard(billboard, openOrClose)
 end
 	
 	for i, v in pairs(Boxs:GetChildren()) do
-	local boxPillows = Pillows:FindFirstChild(v.Name)
+	local boxPillows = Pillows:FindFirstChild(v.Name) -- find box in pillows folder
 	
 	if boxPillows ~= nil then
-		local billboardTemplate = script.Template:Clone()
-		local Container = billboardTemplate:WaitForChild("Container")
-		local mainFrame = Container:WaitForChild("MainFrame")
+		local billboardTemplate = script.Template:Clone() -- clone template
+		local Container = billboardTemplate:WaitForChild("Container") -- billboardTemplate.Container
+		local mainFrame = Container:WaitForChild("MainFrame") --Container.MainFrame
 		local template = mainFrame:WaitForChild("Template") --button template
-		local display = template:WaitForChild("Display")
+		local display = template:WaitForChild("Display") -- template.Display
 		
 		
-		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards
+		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards 
 		billboardTemplate.Name = v.Name
-		billboardTemplate.Adornee = v.Box
-		billboardTemplate.Enabled = true
+		billboardTemplate.Adornee = v.Box 
+		billboardTemplate.Enabled = true -- enabled
 		
 		local pillows = {}
 		
@@ -79,8 +79,8 @@ end
 					pillowModel.Camera.FieldOfView = 5
 					pillowModel.Visible = true
 
-					runService.RenderStepped:Connect(function()
-						pillowModel:SetCFrame(CFrame.Angles(0,0,0) * CFrame.Angles(math.rad(-10),0,0))
+					runService.RenderStepped:Connect(function() 
+						pillowModel:SetCFrame(CFrame.Angles(0,0,0) * CFrame.Angles(math.rad(-10),0,0)) -- rotation module3D
 					end)
 					break
 				else
@@ -187,12 +187,12 @@ uis.InputBegan:Connect(function(input, GPE)
 
 			end
 			
-			if canHatch == true  then
+			if canHatch == true  then 
 				
-				local result = replicatedstroage:WaitForChild("Remotes"):WaitForChild("HatchServer"):InvokeServer(nearestBox)
-				if result ~= nil then
+				local result = replicatedstroage:WaitForChild("Remotes"):WaitForChild("HatchServer"):InvokeServer(nearestBox) -- Random pillow
+				if result ~= nil then 
 					
-					_G.hatchOne(result,nearestBox)
+					_G.hatchOne(result,nearestBox) -- Hatch box
 			end
 			end
 			
