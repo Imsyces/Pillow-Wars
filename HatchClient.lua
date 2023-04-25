@@ -1,3 +1,5 @@
+
+-- SERVICES
 local replicatedstroage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
 local tweenservice = game:GetService("TweenService")
@@ -21,7 +23,7 @@ wait(.5)
 
 local function animateBillboard(billboard, openOrClose)
 
-	if openOrClose == true then
+	if openOrClose == true then -- open 
 		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play() -- Play Tween
 	else
 		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play() -- Stop Tween
@@ -32,7 +34,7 @@ local function animateBillboard(billboard, openOrClose)
 	wait(.5)
 end
 	
-	for i, v in pairs(Boxs:GetChildren()) do
+	for i, v in pairs(Boxs:GetChildren()) do -- get boxs childrens
 	local boxPillows = Pillows:FindFirstChild(v.Name) -- find box in pillows folder
 	
 	if boxPillows ~= nil then
