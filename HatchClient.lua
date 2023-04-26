@@ -1,7 +1,7 @@
-local replicatedstroage = game:GetService("ReplicatedStorage")
-local runService = game:GetService("RunService")
-local tweenservice = game:GetService("TweenService")
-local uis = game:GetService("UserInputService")
+local replicatedstroage = game:GetService("ReplicatedStorage") -- ReplicatedStorage
+local runService = game:GetService("RunService") -- RunService
+local tweenservice = game:GetService("TweenService") -- TweenService Using for animate
+local uis = game:GetService("UserInputService") -- UserInputService
 
 
 local camera = workspace.Camera -- Camera
@@ -12,30 +12,30 @@ local Boxs = workspace:WaitForChild("Boxs") -- workspace.Boxs
 local module3D = require(replicatedstroage:WaitForChild("Module3D")) --replicatedstroage.Module3D
 
 
-local maxDisplayDistance = 15 
-local canHatch = false 
-local isHatching = false
-local hatchOneConnection = nil
+local maxDisplayDistance = 15 -- Display Distance for billboards
+local canHatch = false -- If true then player can hatch box
+local isHatching = false -- Is Hatching Now 
+local hatchOneConnection = nil -- Connection
 
-wait(.5)
+wait(.5) -- Wait half seconds
 
-local function animateBillboard(billboard, openOrClose)
+local function animateBillboard(billboard, openOrClose) -- bilboard: Instance, openOrClose: Bool
 
 	if openOrClose == true then -- open 
-		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play() -- Play Tween
+		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play() -- Play Tween (Animation)
 	else
-		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play() -- Stop Tween
+		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play() -- Stop Tween 
 		wait(.1) 
-		billboard.Enabled = false
+		billboard.Enabled = false -- Close billboard (Player Can't see)
 		
 	end
-	wait(.5)
+	wait(.5)  -- Wait half seconds
 end
 	
 	for i, v in pairs(Boxs:GetChildren()) do -- get boxs childrens
 	local boxPillows = Pillows:FindFirstChild(v.Name) -- find box in pillows folder
 	
-	if boxPillows ~= nil then
+	if boxPillows ~= nil then -- If box's found then
 		local billboardTemplate = script.Template:Clone() -- clone template
 		local Container = billboardTemplate:WaitForChild("Container") -- billboardTemplate.Container
 		local mainFrame = Container:WaitForChild("MainFrame") --Container.MainFrame
@@ -43,18 +43,18 @@ end
 		local display = template:WaitForChild("Display") -- template.Display
 		
 		
-		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards 
-		billboardTemplate.Name = v.Name
-		billboardTemplate.Adornee = v.Box 
-		billboardTemplate.Enabled = true -- enabled
+		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards -- billboardTemplate Parent => BoxBillboard
+		billboardTemplate.Name = v.Name -- Box's name
+		billboardTemplate.Adornee = v.Box -- Display on Box
+		billboardTemplate.Enabled = true -- Player Can see
 		
-		local pillows = {}
+		local pillows = {} -- Pillows
 		
-		for x, pillow in pairs(boxPillows:GetChildren()) do
-			table.insert(pillows,pillow.Rarity.Value)
+		for x, pillow in pairs(boxPillows:GetChildren()) do -- Get pillows in box
+			table.insert(pillows,pillow.Rarity.Value) -- Inserts Pillow Rarity
 		end
 		
-		table.sort(pillows)
+		table.sort(pillows) -- Sort Pillows by Rarities
 		for i = 1, math.floor(#pillows/2) do -- Sort Pillows by Rarities
 			local j = #pillows - i + 1
 			pillows[i], pillows[j] = pillows[j], pillows[i]
