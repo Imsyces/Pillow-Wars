@@ -190,7 +190,7 @@ uis.InputBegan:Connect(function(input, GPE)
 			if canHatch == true  then 
 				
 				local result = replicatedstroage:WaitForChild("Remotes"):WaitForChild("HatchServer"):InvokeServer(nearestBox) -- Random pillow
-				if result ~= nil then 
+				if result ~= nil then -- If its not empty then
 					
 					_G.hatchOne(result,nearestBox) -- Hatch box
 			end
