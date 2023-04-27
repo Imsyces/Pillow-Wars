@@ -67,23 +67,23 @@ end
 		
 		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards -- BillboardTemplate Parent => BoxBillboards Folder
 		billboardTemplate.Name = v.Name -- Changes BillboardTemplate Name to Box Name
-		billboardTemplate.Adornee = v.Box -- 
+		billboardTemplate.Adornee = v.Box -- Template Adornee = Box
 		billboardTemplate.Btn.Adornee = v.Box -- Hatch Button Adornee = Box
-		billboardTemplate.Enabled = true -- Enabed Player Can See
+		billboardTemplate.Enabled = true -- Enabled Player Can See
 		
-		local pillows = {}
+		local pillows = {} -- Pillows Table
 		
-		for x, pillow in pairs(boxPillows:GetChildren()) do
-			table.insert(pillows,pillow.Rarity.Value)
+		for x, pillow in pairs(boxPillows:GetChildren()) do -- Get Each Pillow In box
+			table.insert(pillows,pillow.Rarity.Value) -- Insert Pillows Rarity
 		end
 		
-		table.sort(pillows)
-		for i = 1, math.floor(#pillows/2) do
+		table.sort(pillows) -- Sort Pillows by rarity
+		for i = 1, math.floor(#pillows/2) do 
 			local j = #pillows - i + 1
 			pillows[i], pillows[j] = pillows[j], pillows[i]
 		end
 		
-		for _, rarity in pairs(pillows) do
+		for _, rarity in pairs(pillows) do -- Get rarity In each pillow
 			
 		
 		for _, pillow in pairs(boxPillows:GetChildren()) do
