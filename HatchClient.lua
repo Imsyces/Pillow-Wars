@@ -16,6 +16,9 @@ local maxDisplayDistance = 15
 local canHatch = false
 local isHatching = false
 local hatchOneConnection = nil
+local cooldown = false
+local cantOpenBillboard = false
+
 
 wait(.5)
 
@@ -30,6 +33,27 @@ local function animateBillboard(billboard, openOrClose)
 	end
 	wait(.5)
 end
+
+local function disableAllBillboards()
+	cantOpenBillboard = true
+	for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do
+		if v:IsA("BillboardGui") then
+			animateBillboard(v, false)
+			animateBillboard(v:FindFirstChild("Btn"), false)
+		end
+	end
+end
+
+local function enableAllBillboards()
+	cantOpenBillboard = false
+	for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do
+		if v:IsA("BillboardGui") then
+			animateBillboard(v, true)
+			animateBillboard(v:FindFirstChild("Btn"), true)
+		end
+	end
+end
+
 	
 	for i, v in pairs(Boxs:GetChildren()) do
 	local boxPillows = Pillows:FindFirstChild(v.Name)
@@ -92,17 +116,24 @@ end
 		
 		 runService.RenderStepped:Connect(function()
 			if player:DistanceFromCharacter(v.Box.PrimaryPart.Position) < maxDisplayDistance then
-				
-				billboardTemplate.Enabled = true
-				animateBillboard(billboardTemplate,true)
+				if cantOpenBillboard == false then
+					billboardTemplate.Enabled = true
+					billboardTemplate:FindFirstChild("Btn").Enabled = true
+					animateBillboard(billboardTemplate,true)
+					animateBillboard(billboardTemplate:FindFirstChild("Btn"),true)
+				end
 			else
-				animateBillboard(billboardTemplate,false)
-				
+				if cantOpenBillboard == false then
+					animateBillboard(billboardTemplate,false)
+					animateBillboard(billboardTemplate:FindFirstChild("Btn"),true)
+				end
 			end
 		end)
 	end
 end
 _G.hatchOne = function(pillowName,box)
+	spawn(function() disableAllBillboards() end)
+	
 	print(pillowName)
 	local pillow = Pillows[box.Name]:FindFirstChild(pillowName):Clone()
 
@@ -155,6 +186,7 @@ _G.hatchOne = function(pillowName,box)
 		end
 		isHatching = false
 		script.Parent.pillowDisplay.Visible = false
+		spawn(function() enableAllBillboards() end)
 	end
 
 
@@ -192,8 +224,13 @@ uis.InputBegan:Connect(function(input, GPE)
 				
 				local result = replicatedstroage:WaitForChild("Remotes"):WaitForChild("HatchServer"):InvokeServer(nearestBox)
 				if result ~= nil then
+					if not cooldown then
+						cooldown = true
+						_G.hatchOne(result,nearestBox)
+						wait(.1)
+						cooldown = false
+					end
 					
-					_G.hatchOne(result,nearestBox)
 			end
 			end
 			
@@ -230,11 +267,16 @@ for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do
 
 				local result = replicatedstroage:WaitForChild("Remotes"):WaitForChild("HatchServer"):InvokeServer(nearestBox)
 				if result ~= nil then
-
-					_G.hatchOne(result,nearestBox)
+					
+					if not cooldown then
+						cooldown = true
+						_G.hatchOne(result,nearestBox)
+						wait(.1)
+						cooldown = false
+						
+					end
 				end
 			end
-
 		end
-		end)
+	end)
 end
