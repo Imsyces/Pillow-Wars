@@ -92,22 +92,22 @@ end
 
 					local clonedTemplate = template:Clone() -- Clone Template
 
-					clonedTemplate.Name = pillow.Name
-					clonedTemplate.Rarity.Text = tostring(pillow.Rarity.Value).."%"
-					clonedTemplate.Visible = true
-					clonedTemplate.Parent = mainFrame
+					clonedTemplate.Name = pillow.Name -- Rename Button Template to Pillow Name
+					clonedTemplate.Rarity.Text = tostring(pillow.Rarity.Value).."%"  -- Convert value to string
+					clonedTemplate.Visible = true -- Make visible
+					clonedTemplate.Parent = mainFrame -- Make parent Main Frame
 
-					local pillowModel = module3D:Attach3D(clonedTemplate.Display,pillow:Clone())
-					pillowModel:SetDepthMultiplier(1.2)
-					pillowModel.Camera.FieldOfView = 5
-					pillowModel.Visible = true
+					local pillowModel = module3D:Attach3D(clonedTemplate.Display,pillow:Clone()) -- Convert Frame to ViewportFrame
+					pillowModel:SetDepthMultiplier(1.2) -- SetDepthMultiplier to 1.2
+					pillowModel.Camera.FieldOfView = 5 -- Set FieldOfView to 5 
+					pillowModel.Visible = true -- Make visible
 
-					runService.RenderStepped:Connect(function()
-						pillowModel:SetCFrame(CFrame.Angles(0,0,0) * CFrame.Angles(math.rad(-10),0,0))
+					runService.RenderStepped:Connect(function() -- Loop in miliseconds
+						pillowModel:SetCFrame(CFrame.Angles(0,0,0) * CFrame.Angles(math.rad(-10),0,0)) -- Rotate Pillow
 					end)
-					break
-				else
-					continue
+					break -- Stop Loop
+				else -- Else
+					continue -- Continue
 				end
 				end
 				
