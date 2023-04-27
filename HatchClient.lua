@@ -1,76 +1,75 @@
-local replicatedstroage = game:GetService("ReplicatedStorage")
-local runService = game:GetService("RunService")
-local tweenservice = game:GetService("TweenService")
-local uis = game:GetService("UserInputService")
+-- Sory for Bad english 
+local replicatedstroage = game:GetService("ReplicatedStorage") -- ReplicatedStorage Service
+local runService = game:GetService("RunService") -- RunService Service
+local tweenservice = game:GetService("TweenService") -- TweenService Service
+local uis = game:GetService("UserInputService") -- UserInputService Service
 
 
-local camera = workspace.Camera
-local player = game.Players.LocalPlayer
+local camera = workspace.Camera -- Camera
+local player = game.Players.LocalPlayer -- Player
 
-local Pillows = replicatedstroage:WaitForChild("Pillows")
-local Boxs = workspace:WaitForChild("Boxs")
-local module3D = require(replicatedstroage:WaitForChild("Module3D"))
-
-
-local maxDisplayDistance = 15
-local canHatch = false
-local isHatching = false
-local hatchOneConnection = nil
-local cooldown = false
-local cantOpenBillboard = false
+local Pillows = replicatedstroage:WaitForChild("Pillows") -- Pillows
+local Boxs = workspace:WaitForChild("Boxs") -- Boxs
+local module3D = require(replicatedstroage:WaitForChild("Module3D")) -- Module3D
 
 
-wait(.5)
+local maxDisplayDistance = 15 -- Max Display distance for Billboards
+local canHatch = false -- When true Player can hatch box
+local isHatching = false -- When true Player Hatching box 
+local hatchOneConnection = nil -- Connection
+local cooldown = false -- When its true billboards closing
+local cantOpenBillboard = false -- When its true Billboards cant open
 
-local function animateBillboard(billboard, openOrClose)
-	if openOrClose == true then
-		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play()
-	else
-		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play()
-		wait(.1)
-		billboard.Enabled = false
+
+wait(.5) -- Wait half seconds
+
+local function animateBillboard(billboard, openOrClose) -- Billboard: Instance, openOrClose: Bool If its true its open If its false its closed
+	if openOrClose == true then -- Open
+		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(7,0,8,0)}):Play() -- Animate billboard
+	else -- else
+		tweenservice:Create(billboard,TweenInfo.new(.1),{Size = UDim2.new(0,0,0,0)}):Play() -- Close billboard
+		wait(.1) -- wait 0.1 seconds
+		billboard.Enabled = false -- Disable billboard
 		
 	end
-	wait(.5)
+	wait(.5) -- Wait half seconds
 end
 
-local function disableAllBillboards()
-	cantOpenBillboard = true
-	for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do
-		if v:IsA("BillboardGui") then
-			animateBillboard(v, false)
-			animateBillboard(v:FindFirstChild("Btn"), false)
+local function disableAllBillboards() -- Disable All billboards Enabled
+	cantOpenBillboard = true -- Disabled Player cant see
+	for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do -- Each item in BoxBillboards folder
+		if v:IsA("BillboardGui") then -- If Item's class billboardGui then
+			animateBillboard(v, false) -- Close Billboard
 		end
 	end
 end
 
-local function enableAllBillboards()
-	cantOpenBillboard = false
-	for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do
-		if v:IsA("BillboardGui") then
-			animateBillboard(v, true)
-			animateBillboard(v:FindFirstChild("Btn"), true)
+local function enableAllBillboards() -- Enable All billboards Disabled
+	cantOpenBillboard = false -- Enabled Player can see
+	for i,v in pairs(script.Parent.Parent.BoxBillboards:GetChildren()) do --  Each item in BoxBillboards folder
+		if v:IsA("BillboardGui") then -- If Item's class BillboardGui then
+			animateBillboard(v, true) -- Enable Billboard
 		end
 	end
 end
 
 	
-	for i, v in pairs(Boxs:GetChildren()) do
-	local boxPillows = Pillows:FindFirstChild(v.Name)
+	for i, v in pairs(Boxs:GetChildren()) do -- Each Box In Boxs Folder
+	local boxPillows = Pillows:FindFirstChild(v.Name) -- Find Box in Pillows Folder
 	
-	if boxPillows ~= nil then
-		local billboardTemplate = script.Template:Clone()
-		local Container = billboardTemplate:WaitForChild("Container")
-		local mainFrame = Container:WaitForChild("MainFrame")
-		local template = mainFrame:WaitForChild("Template") --button template
-		local display = template:WaitForChild("Display")
+	if boxPillows ~= nil then -- If Its not empty then
+		local billboardTemplate = script.Template:Clone() -- Clone Billboard Template
+		local Container = billboardTemplate:WaitForChild("Container") -- Container in Template 
+		local mainFrame = Container:WaitForChild("MainFrame")  -- mainFrame in Container
+		local template = mainFrame:WaitForChild("Template") -- Button Template in  mainFrame
+		local display = template:WaitForChild("Display") -- Display Frame  in  Button Template
 		
 		
-		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards
-		billboardTemplate.Name = v.Name
-		billboardTemplate.Adornee = v.Box
-		billboardTemplate.Btn.Adornee = v.Box
-		billboardTemplate.Enabled = true
+		billboardTemplate.Parent = script.Parent.Parent.BoxBillboards -- BillboardTemplate Parent => BoxBillboards Folder
+		billboardTemplate.Name = v.Name -- Changes BillboardTemplate Name to Box Name
+		billboardTemplate.Adornee = v.Box -- 
+		billboardTemplate.Btn.Adornee = v.Box -- Hatch Button Adornee = Box
+		billboardTemplate.Enabled = true -- Enabed Player Can See
 		
 		local pillows = {}
 		
