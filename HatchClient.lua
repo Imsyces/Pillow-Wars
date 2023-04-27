@@ -86,11 +86,11 @@ end
 		for _, rarity in pairs(pillows) do -- Get rarity In each pillow
 			
 		
-		for _, pillow in pairs(boxPillows:GetChildren()) do
-			if pillow.Rarity.Value == rarity then
-					local rarity = pillow.Rarity.Value
+		for _, pillow in pairs(boxPillows:GetChildren()) do -- Get Each pillow 
+			if pillow.Rarity.Value == rarity then -- If pillow rarity Pillow Rarity then
+					local rarity = pillow.Rarity.Value -- Set Rarity to Pillow Rarity
 
-					local clonedTemplate = template:Clone()
+					local clonedTemplate = template:Clone() -- Clone Template
 
 					clonedTemplate.Name = pillow.Name
 					clonedTemplate.Rarity.Text = tostring(pillow.Rarity.Value).."%"
